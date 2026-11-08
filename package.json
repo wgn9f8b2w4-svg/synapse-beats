@@ -1,0 +1,20 @@
+{
+  "name": "local-brain-fm",
+  "version": "1.0.0",
+  "description": "Clean-room REA reconstruction of Brain.fm neural phase-locking audio engine for local personal use",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "brainwave-entrainment",
+    "neural-phase-locking",
+    "functional-music",
+    "web-audio-api",
+    "brainfm",
+    "focus",
+    "adhd"
+  ],
+  "author": "",
+  "license": "MIT"
+}

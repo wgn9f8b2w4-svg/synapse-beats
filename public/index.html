@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Synapse.fm">
+  <title>Synapse.fm — Local Brainwave Entrainment & Neural Phase-Locking</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="binaural-lab.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Navigation & Brand Bar -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
+            <path d="M12 6v6l4 2"/>
+            <circle cx="12" cy="12" r="3" fill="currentColor" fill-opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title" id="appTitle">SYNAPSE<span class="brand-accent">.FM</span></h1>
+        </div>
+      </div>
+
+      <div class="header-badges" id="systemStatus">
+        <div class="badge status-badge" id="playbackBadge" role="status" aria-live="polite">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span id="playbackStatusText">Engine Idle</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Application Grid -->
+    <main class="main-grid">
+      <!-- Left Column: Primary Player, Oscilloscope Visualizer & Cognitive Modes -->
+      <section class="player-panel" aria-label="Playback and Entrainment Controls">
+        
+        <!-- Live Scientific Status & Telemetry Card -->
+        <div class="state-banner">
+          <div class="state-meta">
+            <div class="eyebrow-wrapper">
+              <span class="eyebrow-bullet" aria-hidden="true"></span>
+              <span class="eyebrow" id="modeBandEyebrow">BETA WAVE TARGET (13 - 30 Hz)</span>
+            </div>
+            <h2 class="state-title" id="modeTitle">Deep Focus</h2>
+            <p class="state-desc" id="modeDescription">
+              16 Hz Beta entrainment optimizes sustained executive attention and cognitive stamina.
+            </p>
+          </div>
+          
+          <div class="telemetry-grid" role="group" aria-label="Real-time neural telemetry readouts">
+            <!-- Entrainment Frequency -->
+            <div class="telemetry-card">
+              <div class="telemetry-head">
+                <svg class="telemetry-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+                <span class="telemetry-label">Entrainment Freq</span>
+              </div>
+              <span class="telemetry-value" id="telemetryFreq">16.0 <small>Hz</small></span>
+              <span class="telemetry-sub" id="telemetryWave">Beta Rhythm</span>
+            </div>
+
+            <!-- Amplitude Modulation Depth -->
+            <div class="telemetry-card">
+              <div class="telemetry-head">
+                <svg class="telemetry-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m12 14 4-4"/>
+                  <path d="M3.34 19a10 10 0 1 1 17.32 0"/>
+                </svg>
+                <span class="telemetry-label">AM Depth</span>
+              </div>
+              <span class="telemetry-value" id="telemetryDepth">65 <small>%</small></span>
+              <span class="telemetry-sub">Cortical Lock</span>
+            </div>
+
+            <!-- Acoustic Masking Bed -->
+            <div class="telemetry-card">
+              <div class="telemetry-head">
+                <svg class="telemetry-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M2 12h20M2 6h20M2 18h20"/>
+                </svg>
+                <span class="telemetry-label">Masking Bed</span>
+              </div>
+              <span class="telemetry-value" id="telemetryMasking">35 <small>%</small></span>
+              <span class="telemetry-sub">Brown/Pink Noise</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-Time Neural Phase & Spectrum Oscilloscope -->
+        <div class="visualizer-container">
+          <div class="visualizer-header">
+            <div class="tabs" role="tablist" aria-label="Visualizer Display Modes">
+              <button class="tab-btn active" id="tabWaveform" role="tab" aria-selected="true" aria-controls="visualizerCanvas">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                </svg>
+                <span>Neural Phase Waveform</span>
+              </button>
+              <button class="tab-btn" id="tabSpectrum" role="tab" aria-selected="false" aria-controls="visualizerCanvas">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M18 20V10M12 20V4M6 20v-6"/>
+                </svg>
+                <span>Acoustic FFT Spectrum</span>
+              </button>
+            </div>
+            <div class="vis-indicator-wrapper">
+              <span class="live-pulse-dot" aria-hidden="true"></span>
+              <span class="vis-indicator">Real-Time Web Audio DSP</span>
+            </div>
+          </div>
+          <canvas id="visualizerCanvas" width="900" height="220" role="img" aria-label="Real-time neural phase waveform and acoustic FFT spectrum oscilloscope">
+            Waveform visualization not supported by your browser.
+          </canvas>
+          <div class="visualizer-overlay" id="visualizerOverlay">
+            <div class="overlay-card">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              <p>Click Play to Start Generative Neural Synthesis</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Master Transport Controls Deck -->
+        <div class="transport-controls">
+          <!-- Session Timer Display -->
+          <div class="timer-display" id="sessionTimerDisplay" aria-label="Session Timer">
+            <div class="timer-label-row">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span class="timer-mode" id="timerModeLabel">Infinite Stream</span>
+              <span id="sessionDuration" class="session-duration-tag" style="display:none">Infinite</span>
+            </div>
+            <span class="timer-time" id="timerClock"><span id="timeDisplay">--:--</span></span>
+          </div>
+
+          <!-- Tactile Master Play / Pause Button -->
+          <div class="play-btn-wrapper" id="togglePlayBtn">
+            <button class="play-btn" id="masterPlayBtn" aria-label="Play or Pause Entrainment Audio">
+              <div class="play-btn-pulse" id="btnPulse" aria-hidden="true"></div>
+              <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <polygon points="5,3 19,12 5,21"></polygon>
+              </svg>
+              <svg id="pauseIcon" viewBox="0 0 24 24" fill="currentColor" style="display: none;" aria-hidden="true">
+                <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+                <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Master & Masking Volume Tactile Sliders -->
+          <div class="audio-sliders">
+            <!-- Master Volume -->
+            <div class="slider-group" id="masterVolume">
+              <div class="slider-header">
+                <label for="masterVolumeSlider">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                  </svg>
+                  <span>Master Volume</span>
+                </label>
+                <span class="value-readout" id="volVal">80%</span>
+              </div>
+              <div class="slider-track-wrap">
+                <input type="range" id="masterVolumeSlider" min="0" max="1" step="0.01" value="0.8" aria-label="Master synthesis volume" oninput="const vv=document.getElementById('volVal'); if(vv) vv.textContent=Math.round(this.value*100)+'%';">
+              </div>
+            </div>
+
+            <!-- Acoustic Masking & Spatial Depth -->
+            <div class="slider-group" id="spatialDepth">
+              <div class="slider-header">
+                <label for="maskingVolumeSlider">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M8 19v1M8 14v1M12 21v1M12 16v1M16 19v1M16 14v1"/>
+                  </svg>
+                  <span>Acoustic Masking &amp; Spatial Depth</span>
+                </label>
+                <span class="value-readout" id="spatialVal">35%</span>
+              </div>
+              <div class="slider-track-wrap">
+                <input type="range" id="maskingVolumeSlider" min="0" max="1" step="0.01" value="0.35" aria-label="Acoustic pink and brown noise masking volume" oninput="const sv=document.getElementById('spatialVal'); if(sv) sv.textContent=Math.round(this.value*100)+'%';">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Target Cognitive State Selector Grid -->
+        <div class="section-title">
+          <div class="title-with-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="m4.93 4.93 4.24 4.24M14.83 9.17l4.24-4.24M14.83 14.83l4.24 4.24M9.17 14.83l-4.24 4.24"/>
+            </svg>
+            <h3>Target Cognitive State</h3>
+          </div>
+          <span class="section-hint">Select your objective to shift brainwave entrainment</span>
+        </div>
+
+        <div class="modes-grid" role="radiogroup" aria-label="Target cognitive brainwave state">
+          <!-- 1. Deep Focus -->
+          <button class="mode-card active" data-mode="focus" role="radio" aria-checked="true">
+            <div class="mode-top">
+              <div class="mode-icon beta-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+              </div>
+              <span class="mode-freq">16.0 Hz Beta</span>
+            </div>
+            <div class="mode-info">
+              <h4>Deep Focus</h4>
+              <p>Sustained concentration &amp; cognitive work</p>
+            </div>
+          </button>
+
+          <!-- 2. ADHD Boost / Deep Work -->
+          <button class="mode-card" data-mode="adhd" role="radio" aria-checked="false">
+            <div class="mode-top">
+              <div class="mode-icon adhd-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.04z"/>
+                  <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.04z"/>
+                </svg>
+              </div>
+              <span class="mode-freq">16.0 Hz High-Depth</span>
+            </div>
+            <div class="mode-info">
+              <h4>ADHD Boost</h4>
+              <p>Frontoparietal locking to curb mind-wandering</p>
+            </div>
+          </button>
+
+          <!-- 3. Creative Flow -->
+          <button class="mode-card" data-mode="flow" role="radio" aria-checked="false">
+            <div class="mode-top">
+              <div class="mode-icon flow-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+                </svg>
+              </div>
+              <span class="mode-freq">13.0 Hz Alpha-Beta</span>
+            </div>
+            <div class="mode-info">
+              <h4>Creative Flow</h4>
+              <p>Writing, coding, and problem-solving</p>
+            </div>
+          </button>
+
+          <!-- 4. Relax & Unwind -->
+          <button class="mode-card" data-mode="relax" role="radio" aria-checked="false">
+            <div class="mode-top">
+              <div class="mode-icon alpha-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                  <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+                </svg>
+              </div>
+              <span class="mode-freq">10.0 Hz Alpha</span>
+            </div>
+            <div class="mode-info">
+              <h4>Relax &amp; Unwind</h4>
+              <p>Decompress and quiet autonomic stress</p>
+            </div>
+          </button>
+
+          <!-- 5. Meditation -->
+          <button class="mode-card" data-mode="meditate" role="radio" aria-checked="false">
+            <div class="mode-top">
+              <div class="mode-icon theta-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                </svg>
+              </div>
+              <span class="mode-freq">5.5 Hz Theta</span>
+            </div>
+            <div class="mode-info">
+              <h4>Meditation</h4>
+              <p>Deep mindfulness &amp; introspective stillness</p>
+            </div>
+          </button>
+
+          <!-- 6. Deep Sleep -->
+          <button class="mode-card" data-mode="sleep" role="radio" aria-checked="false">
+            <div class="mode-top">
+              <div class="mode-icon delta-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+                </svg>
+              </div>
+              <span class="mode-freq">1.5 Hz Delta</span>
+            </div>
+            <div class="mode-info">
+              <h4>Deep Sleep</h4>
+              <p>Slow-wave restorative sleep</p>
+            </div>
+          </button>
+
+          <!-- Compatibility Aliases for Deep Work & Meditation Selectors -->
+          <button class="mode-card" data-mode="deep-work" style="display:none" aria-hidden="true" tabindex="-1"></button>
+          <button class="mode-card" data-mode="meditation" style="display:none" aria-hidden="true" tabindex="-1"></button>
+        </div>
+
+        <!-- Neural Synthesis Parameters Deck -->
+        <div class="card parameters-card" aria-label="Neural Synthesis Parameters">
+          <div class="settings-header-row">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="21" x2="4" y2="14"/>
+              <line x1="4" y1="10" x2="4" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12" y2="3"/>
+              <line x1="20" y1="21" x2="20" y2="16"/>
+              <line x1="20" y1="12" x2="20" y2="3"/>
+              <line x1="1" y1="14" x2="7" y2="14"/>
+              <line x1="9" y1="8" x2="15" y2="8"/>
+              <line x1="17" y1="16" x2="23" y2="16"/>
+            </svg>
+            <h4>Neural Synthesis Parameters</h4>
+          </div>
+          <p class="settings-desc">High-precision acoustic telemetry &amp; fine entrainment calibration.</p>
+
+          <div class="parameters-grid">
+            <!-- Carrier Frequency -->
+            <div class="parameter-control" id="carrierFreq">
+              <div class="slider-header">
+                <label for="carrierFreqInput">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M2 12h20M2 6h20M2 18h20"/>
+                  </svg>
+                  <span>Carrier Frequency</span>
+                </label>
+                <span class="value-readout" id="carrierVal">216.0 Hz</span>
+              </div>
+              <div class="slider-track-wrap">
+                <input type="range" id="carrierFreqInput" class="param-slider" min="100" max="432" step="1" value="216" aria-label="Carrier acoustic frequency in Hertz" oninput="const cv=document.getElementById('carrierVal'); if(cv) cv.textContent=parseFloat(this.value).toFixed(1)+' Hz';">
+              </div>
+            </div>
+
+            <!-- Entrainment Modulation Beat -->
+            <div class="parameter-control" id="binauralBeat">
+              <div class="slider-header">
+                <label for="binauralBeatInput">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  </svg>
+                  <span>Entrainment Modulation Beat</span>
+                </label>
+                <span class="value-readout" id="beatVal">16.0 Hz</span>
+              </div>
+              <div class="slider-track-wrap">
+                <input type="range" id="binauralBeatInput" class="param-slider" min="0.5" max="40" step="0.5" value="16.0" aria-label="Target brainwave entrainment beat frequency in Hertz" oninput="const bv=document.getElementById('beatVal'); if(bv) bv.textContent=parseFloat(this.value).toFixed(1)+' Hz';">
+              </div>
+            </div>
+
+            <!-- Stereophonic Balance -->
+            <div class="parameter-control" id="binauralBalance">
+              <div class="slider-header">
+                <label for="binauralBalanceInput">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="m4.93 4.93 4.24 4.24M14.83 9.17l4.24-4.24M14.83 14.83l4.24 4.24M9.17 14.83l-4.24 4.24"/>
+                  </svg>
+                  <span>Stereo Panning Balance</span>
+                </label>
+                <span class="value-readout" id="balanceVal">Center (0.0)</span>
+              </div>
+              <div class="slider-track-wrap">
+                <input type="range" id="binauralBalanceInput" class="param-slider" min="-1" max="1" step="0.05" value="0.0" aria-label="Stereo acoustic balance" oninput="const bval=document.getElementById('balanceVal'); if(bval) bval.textContent=this.value==0?'Center (0.0)':(this.value<0?'L '+Math.abs(this.value):'R '+this.value);">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Right Column: Settings, Soundscapes & Science Sidebar -->
+      <aside class="sidebar-panel" aria-label="Synthesis Configuration and Neuroscience Parameters">
+        
+        <!-- Neural Effect Intensity Segmented Control -->
+        <div class="card settings-card">
+          <div class="settings-header-row">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="21" x2="4" y2="14"/>
+              <line x1="4" y1="10" x2="4" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12" y2="3"/>
+              <line x1="20" y1="21" x2="20" y2="16"/>
+              <line x1="20" y1="12" x2="20" y2="3"/>
+              <line x1="1" y1="14" x2="7" y2="14"/>
+              <line x1="9" y1="8" x2="15" y2="8"/>
+              <line x1="17" y1="16" x2="23" y2="16"/>
+            </svg>
+            <h4>Neural Effect Intensity</h4>
+          </div>
+          <p class="settings-desc">Adjusts amplitude modulation depth for cortical synchronization.</p>
+          
+          <div class="segmented-control" id="neuralLevelControl" role="radiogroup" aria-label="Neural modulation intensity">
+            <button class="seg-btn" data-level="low" role="radio" aria-checked="false">
+              <span>Low</span>
+              <small>Gentle (50%)</small>
+            </button>
+            <button class="seg-btn" data-level="medium" role="radio" aria-checked="false">
+              <span>Medium</span>
+              <small>Standard (80%)</small>
+            </button>
+            <button class="seg-btn active" data-level="high" role="radio" aria-checked="true">
+              <span>High</span>
+              <small>Deep (115%)</small>
+            </button>
+            <!-- Compatibility Aliases for Gentle, Standard, Deep Selectors -->
+            <button class="seg-btn" data-level="gentle" style="display:none" aria-hidden="true" tabindex="-1"></button>
+            <button class="seg-btn" data-level="standard" style="display:none" aria-hidden="true" tabindex="-1"></button>
+            <button class="seg-btn" data-level="deep" style="display:none" aria-hidden="true" tabindex="-1"></button>
+          </div>
+        </div>
+
+        <!-- Generative Acoustic Soundscapes -->
+        <div class="card settings-card">
+          <div class="settings-header-row">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 18V5l12-2v13"/>
+              <circle cx="6" cy="18" r="3"/>
+              <circle cx="18" cy="16" r="3"/>
+            </svg>
+            <h4>Acoustic Soundscape</h4>
+          </div>
+          <p class="settings-desc">Zero-salience procedural synth arrangements &amp; masking beds.</p>
+
+          <div class="soundscape-list" role="radiogroup" aria-label="Generative acoustic soundscape">
+            <!-- 1. Cosmic Ambient -->
+            <label class="soundscape-option">
+              <input type="radio" name="soundscape" value="cosmic" checked>
+              <div class="soundscape-box">
+                <div class="soundscape-icon-col" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                  </svg>
+                </div>
+                <div class="soundscape-details">
+                  <span class="soundscape-name">Cosmic Ambient</span>
+                  <span class="soundscape-tags">Sub-bass + Analog Saw/Tri</span>
+                </div>
+                <div class="soundscape-check" aria-hidden="true"></div>
+              </div>
+            </label>
+
+            <!-- 2. Lo-Fi Warmth -->
+            <label class="soundscape-option">
+              <input type="radio" name="soundscape" value="lofi">
+              <div class="soundscape-box">
+                <div class="soundscape-icon-col" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                </div>
+                <div class="soundscape-details">
+                  <span class="soundscape-name">Lo-Fi Warmth</span>
+                  <span class="soundscape-tags">Mellow Keys + Filter Sweep</span>
+                </div>
+                <div class="soundscape-check" aria-hidden="true"></div>
+              </div>
+            </label>
+
+            <!-- 3. Ethereal Sine Wash -->
+            <label class="soundscape-option">
+              <input type="radio" name="soundscape" value="ethereal">
+              <div class="soundscape-box">
+                <div class="soundscape-icon-col" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+                  </svg>
+                </div>
+                <div class="soundscape-details">
+                  <span class="soundscape-name">Ethereal Sine Wash</span>
+                  <span class="soundscape-tags">Minimalist Meditative Drones</span>
+                </div>
+                <div class="soundscape-check" aria-hidden="true"></div>
+              </div>
+            </label>
+
+            <!-- 4. Procedural Pink & Brown Noise Bed -->
+            <label class="soundscape-option">
+              <input type="radio" name="soundscape" value="pink-brown">
+              <div class="soundscape-box">
+                <div class="soundscape-icon-col" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M8 19v1M8 14v1M12 21v1M12 16v1M16 19v1M16 14v1"/>
+                  </svg>
+                </div>
+                <div class="soundscape-details">
+                  <span class="soundscape-name">Pink &amp; Brown Noise Bed</span>
+                  <span class="soundscape-tags">Acoustic Masking Kellet Filter</span>
+                </div>
+                <div class="soundscape-check" aria-hidden="true"></div>
+              </div>
+            </label>
+
+            <!-- Compatibility Aliases for Rain-Filtered, Sub-Bass, Pure-Iso Selectors -->
+            <div style="display:none" aria-hidden="true">
+              <input type="radio" name="soundscape" value="rain-filtered">
+              <input type="radio" name="soundscape" value="sub-bass">
+              <input type="radio" name="soundscape" value="pure-iso">
+            </div>
+          </div>
+        </div>
+
+        <!-- Session Timer / Pomodoro Presets -->
+        <div class="card settings-card">
+          <div class="settings-header-row">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <h4>Session Timer / Pomodoro</h4>
+          </div>
+          <p class="settings-desc">Automated intervals for focused productivity cycles.</p>
+
+          <div class="timer-presets" role="radiogroup" aria-label="Focus timer duration presets">
+            <button class="preset-btn active" data-minutes="0" role="radio" aria-checked="true">Infinite</button>
+            <button class="preset-btn" data-minutes="25" role="radio" aria-checked="false">25m Pomodoro</button>
+            <button class="preset-btn" data-minutes="45" role="radio" aria-checked="false">45m Deep</button>
+            <button class="preset-btn" data-minutes="90" role="radio" aria-checked="false">90m Cycle</button>
+          </div>
+        </div>
+
+        <!-- Quick Protocols & Presets Section -->
+        <div class="card settings-card">
+          <div class="settings-header-row">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            <h4>Neural Quick Presets</h4>
+          </div>
+          <p class="settings-desc">One-touch scientific neuroacoustic protocols.</p>
+
+          <div class="quick-presets-row" role="group" aria-label="Neural Protocol Quick Presets">
+            <button class="preset-btn quick-protocol-btn" data-preset="gamma-breakthrough" data-minutes="25">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+              <span>Gamma Breakthrough</span>
+            </button>
+            <button class="preset-btn quick-protocol-btn" data-preset="theta-renewal" data-minutes="45">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+              </svg>
+              <span>Theta Renewal</span>
+            </button>
+            <button class="preset-btn quick-protocol-btn" data-preset="delta-reset" data-minutes="90">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+              </svg>
+              <span>Delta Reset</span>
+            </button>
+          </div>
+        </div>
+
+
+
+      </aside>
+      <!-- ===== Binaural Lab: hybrid tone generator, phase scope, export, presets ===== -->
+      <section class="bl-lab" id="binauralLab" aria-labelledby="blTitle">
+        <header class="bl-head">
+          <div class="bl-title-wrap">
+            <span class="bl-eyebrow">HEMI-SYNC LAB</span>
+            <h2 class="bl-title" id="blTitle">Binaural Tone Generator</h2>
+            <p class="bl-sub">Hard-panned left/right oscillator pair. The beat is perceived only through <strong>stereo headphones</strong>.</p>
+          </div>
+          <div class="bl-head-actions">
+            <label class="bl-check" for="blLayerMusic">
+              <input type="checkbox" id="blLayerMusic">
+              <span>Layer with Synapse music</span>
+            </label>
+            <button type="button" class="bl-btn bl-btn-ghost" id="blDrawerOpen" aria-expanded="false" aria-controls="blDrawer">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+              Gateway Research
+            </button>
+            <button type="button" class="bl-btn bl-btn-primary" id="blPlay" aria-pressed="false">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><polygon points="6,4 20,12 6,20"/></svg>
+              <span id="blPlayLabel">Start Tone</span>
+            </button>
+          </div>
+        </header>
+
+        <p class="bl-status" id="blStatus" role="status" aria-live="polite"></p>
+
+        <div class="bl-grid">
+          <!-- Scope + export -->
+          <div class="bl-col">
+            <div class="bl-card bl-scope-card">
+              <div class="bl-card-head">
+                <h3>Phase Scope</h3>
+                <div class="bl-seg" role="tablist" aria-label="Scope mode">
+                  <button type="button" class="bl-seg-btn is-active" role="tab" aria-selected="true" data-scope="waveform">Dual Waveform</button>
+                  <button type="button" class="bl-seg-btn" role="tab" aria-selected="false" data-scope="lissajous">XY Lissajous</button>
+                </div>
+              </div>
+              <div class="bl-scope-wrap">
+                <canvas id="blScope" class="bl-scope" role="img" aria-label="Left and right channel phase scope"></canvas>
+              </div>
+              <div class="bl-readout" aria-live="off">
+                <span class="bl-chip bl-chip-l">L <b id="blFreqL">--</b> Hz</span>
+                <span class="bl-chip bl-chip-r">R <b id="blFreqR">--</b> Hz</span>
+                <span class="bl-chip">&Delta; <b id="blFreqDelta">--</b> Hz</span>
+                <span class="bl-chip bl-chip-band" id="blBandChip">--</span>
+              </div>
+            </div>
+
+            <div class="bl-card">
+              <div class="bl-card-head"><h3>Offline WAV Export</h3><span class="bl-hint">Faster than realtime</span></div>
+              <div class="bl-row">
+                <label class="bl-field" for="blExportDuration"><span>Duration</span>
+                  <select id="blExportDuration">
+                    <option value="60">1 minute</option>
+                    <option value="300">5 minutes</option>
+                    <option value="900" selected>15 minutes</option>
+                    <option value="1800">30 minutes</option>
+                  </select>
+                </label>
+                <label class="bl-field" for="blExportRate"><span>Sample rate</span>
+                  <select id="blExportRate">
+                    <option value="44100" selected>44.1 kHz</option>
+                    <option value="48000">48 kHz</option>
+                  </select>
+                </label>
+                <div class="bl-field"><span>Estimated size</span><output id="blExportSize" class="bl-out">--</output></div>
+              </div>
+              <progress class="bl-progress" id="blExportProgress" max="1" value="0" aria-label="Export progress"></progress>
+              <div class="bl-row bl-row-end">
+                <button type="button" class="bl-btn bl-btn-ghost" id="blExportCancel" hidden>Cancel</button>
+                <button type="button" class="bl-btn bl-btn-primary" id="blExportBtn">Render &amp; Download WAV</button>
+              </div>
+              <p class="bl-hint">16-bit stereo PCM with 2 s fade-in and fade-out. Uses your current carrier, beat, waveform and layer mix.</p>
+            </div>
+          </div>
+
+          <!-- Tuning, layers, presets -->
+          <div class="bl-col">
+            <div class="bl-card">
+              <div class="bl-card-head"><h3>Tuning</h3>
+                <div class="bl-seg" role="radiogroup" aria-label="Frequency mapping">
+                  <button type="button" class="bl-seg-btn is-active" role="radio" aria-checked="true" data-mode="symmetric" title="Left = carrier - beat/2, Right = carrier + beat/2">Symmetric</button>
+                  <button type="button" class="bl-seg-btn" role="radio" aria-checked="false" data-mode="offset" title="Left = carrier, Right = carrier + beat">Offset</button>
+                </div>
+              </div>
+
+              <div class="bl-control">
+                <div class="bl-control-head"><label for="blCarrier">Carrier</label><span class="bl-val"><output id="blCarrierOut">200</output> Hz</span></div>
+                <input type="range" id="blCarrier" min="50" max="1000" step="1" value="200">
+                <div class="bl-chips" id="blCarrierPresets" role="group" aria-label="Carrier presets">
+                  <button type="button" class="bl-pill" data-carrier="136.1">136.1 OM</button>
+                  <button type="button" class="bl-pill" data-carrier="220">220</button>
+                  <button type="button" class="bl-pill" data-carrier="432">432</button>
+                  <button type="button" class="bl-pill" data-carrier="528">528</button>
+                  <button type="button" class="bl-pill" data-carrier="741">741</button>
+                </div>
+              </div>
+
+              <div class="bl-control">
+                <div class="bl-control-head"><label for="blBeat">Beat frequency</label>
+                  <span class="bl-val"><input type="number" id="blBeatNum" min="0.1" max="100" step="0.1" value="10" aria-label="Beat frequency in hertz"> Hz</span>
+                </div>
+                <input type="range" id="blBeat" min="0" max="1000" step="1" value="0" aria-label="Beat frequency (logarithmic)">
+                <div class="bl-chips" id="blBandPresets" role="group" aria-label="Brainwave band presets">
+                  <button type="button" class="bl-pill" data-beat="2" data-band="delta">Delta <small>1-4</small></button>
+                  <button type="button" class="bl-pill" data-beat="6" data-band="theta">Theta <small>4-8</small></button>
+                  <button type="button" class="bl-pill" data-beat="10" data-band="alpha">Alpha <small>8-14</small></button>
+                  <button type="button" class="bl-pill" data-beat="20" data-band="beta">Beta <small>14-30</small></button>
+                  <button type="button" class="bl-pill" data-beat="40" data-band="gamma">Gamma <small>30-100</small></button>
+                </div>
+                <p class="bl-hint" id="blBeatHint" hidden></p>
+              </div>
+
+              <div class="bl-control">
+                <div class="bl-control-head"><span>Waveform</span></div>
+                <div class="bl-seg bl-seg-wide" role="radiogroup" aria-label="Oscillator waveform" id="blWaveform">
+                  <button type="button" class="bl-seg-btn is-active" role="radio" aria-checked="true" data-wave="sine">Sine</button>
+                  <button type="button" class="bl-seg-btn" role="radio" aria-checked="false" data-wave="triangle">Triangle</button>
+                  <button type="button" class="bl-seg-btn" role="radio" aria-checked="false" data-wave="square">Square</button>
+                  <button type="button" class="bl-seg-btn" role="radio" aria-checked="false" data-wave="sawtooth">Saw</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="bl-card">
+              <div class="bl-card-head"><h3>Layers</h3></div>
+              <div class="bl-control">
+                <div class="bl-control-head"><label for="blMixBinaural">Binaural pair</label><output id="blMixBinauralOut" class="bl-val">100%</output></div>
+                <input type="range" id="blMixBinaural" min="0" max="1" step="0.01" value="1">
+              </div>
+              <div class="bl-control">
+                <div class="bl-control-head"><label for="blMixIso">Isochronic pulse</label><output id="blMixIsoOut" class="bl-val">0%</output></div>
+                <input type="range" id="blMixIso" min="0" max="1" step="0.01" value="0">
+              </div>
+              <div class="bl-control">
+                <div class="bl-control-head"><label for="blMixNoise">Pink noise bed</label><output id="blMixNoiseOut" class="bl-val">0%</output></div>
+                <input type="range" id="blMixNoise" min="0" max="1" step="0.01" value="0">
+              </div>
+              <div class="bl-control">
+                <div class="bl-control-head"><label for="blVolume">Tone volume</label><output id="blVolumeOut" class="bl-val">60%</output></div>
+                <input type="range" id="blVolume" min="0" max="1" step="0.01" value="0.6">
+              </div>
+            </div>
+
+            <div class="bl-card">
+              <div class="bl-card-head"><h3>Presets (.bwp)</h3></div>
+              <label class="bl-field" for="blPresetSelect"><span>Library</span>
+                <select id="blPresetSelect"></select>
+              </label>
+              <div class="bl-row">
+                <label class="bl-field bl-grow" for="blPresetName"><span>Name</span>
+                  <input type="text" id="blPresetName" maxlength="40" placeholder="My preset" autocomplete="off">
+                </label>
+              </div>
+              <label class="bl-field" for="blPresetNotes"><span>Notes</span>
+                <textarea id="blPresetNotes" rows="2" maxlength="500" placeholder="Optional notes"></textarea>
+              </label>
+              <div class="bl-row bl-wrap">
+                <button type="button" class="bl-btn bl-btn-ghost" id="blPresetSave">Save</button>
+                <button type="button" class="bl-btn bl-btn-ghost" id="blPresetExport">Export .bwp</button>
+                <button type="button" class="bl-btn bl-btn-ghost" id="blPresetImport">Import</button>
+                <button type="button" class="bl-btn bl-btn-danger" id="blPresetDelete" disabled>Delete</button>
+                <input type="file" id="blPresetFile" accept=".bwp,.json,application/json" multiple hidden>
+              </div>
+              <div class="bl-drop" id="blDrop" tabindex="0">Drop .bwp files anywhere on this panel to import</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Gateway Research slide-out drawer -->
+    <div class="bl-scrim" id="blScrim" hidden></div>
+    <aside class="bl-drawer" id="blDrawer" role="dialog" aria-modal="true" aria-labelledby="blDrawerTitle" aria-hidden="true" inert>
+      <header class="bl-drawer-head">
+        <div>
+          <span class="bl-eyebrow">REFERENCE</span>
+          <h2 id="blDrawerTitle">Gateway Process &amp; Hemi-Sync</h2>
+        </div>
+        <button type="button" class="bl-btn bl-btn-ghost bl-close" id="blDrawerClose" aria-label="Close research drawer">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </header>
+      <div class="bl-drawer-body" id="blDrawerBody"></div>
+    </aside>
+
+    <!-- Semantic Accessible Footer -->
+    <footer class="app-footer">
+      <p>Clean-Room REA Implementation &bull; Web Audio API &bull; 100% Offline &amp; Local Personal Use</p>
+    </footer>
+  </div>
+
+  <!-- Audio Engine & Client App Scripts -->
+  <script src="audio-engine.js"></script>
+  <script src="app.js"></script>
+  <script src="binaural-engine.js"></script>
+  <script src="bwp-manager.js"></script>
+  <script src="binaural-lab.js"></script>
+</body>
+</html>
