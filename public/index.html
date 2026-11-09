@@ -31,6 +31,29 @@
         </div>
       </div>
 
+      <!-- Quick Section & Mode Navigation -->
+      <nav class="header-nav" aria-label="Main Navigation">
+        <button type="button" class="nav-pill active" id="navNeuralStream">Neural Stream</button>
+        <button type="button" class="nav-pill" id="navBinauralLab">Binaural Lab</button>
+        <button type="button" class="nav-pill nav-pill-action" id="btnToggleMiniPlayer" title="Toggle Windowshade Mini-Player (Hotkey: M)">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="14" width="18" height="7" rx="2"/>
+            <line x1="3" y1="9" x2="21" y2="9"/>
+            <line x1="9" y1="21" x2="9" y2="14"/>
+          </svg>
+          <span>Mini Dock</span>
+          <kbd class="kbd-hint">M</kbd>
+        </button>
+        <button type="button" class="nav-pill nav-pill-action" id="btnToggleZen" title="Full-Screen Zen Mode (Hotkey: F)">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3a9 9 0 0 0 0 18v-18z"/>
+          </svg>
+          <span>Zen Mode</span>
+          <kbd class="kbd-hint">F</kbd>
+        </button>
+      </nav>
+
       <div class="header-badges" id="systemStatus">
         <div class="badge status-badge" id="playbackBadge" role="status" aria-live="polite">
           <span class="status-dot" aria-hidden="true"></span>
@@ -114,9 +137,17 @@
                 <span>Acoustic FFT Spectrum</span>
               </button>
             </div>
-            <div class="vis-indicator-wrapper">
-              <span class="live-pulse-dot" aria-hidden="true"></span>
-              <span class="vis-indicator">Real-Time Web Audio DSP</span>
+            <div class="vis-header-actions">
+              <div class="vis-indicator-wrapper">
+                <span class="live-pulse-dot" aria-hidden="true"></span>
+                <span class="vis-indicator">Real-Time Web Audio DSP</span>
+              </div>
+              <button type="button" class="vis-zen-btn" id="visZenBtn" title="Enter Fullscreen Zen Immersion (F)">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                </svg>
+                <span>Zen Immersion</span>
+              </button>
             </div>
           </div>
           <canvas id="visualizerCanvas" width="900" height="220" role="img" aria-label="Real-time neural phase waveform and acoustic FFT spectrum oscilloscope">
@@ -519,6 +550,84 @@
           </div>
         </div>
 
+        <!-- myNoise-Style Multi-Stem Acoustic Mixer Rack -->
+        <div class="card settings-card stem-mixer-card" aria-label="Acoustic Stem Mixer">
+          <div class="settings-header-row">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="21" x2="4" y2="14"/>
+              <line x1="4" y1="10" x2="4" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12" y2="3"/>
+              <line x1="20" y1="21" x2="20" y2="16"/>
+              <line x1="20" y1="12" x2="20" y2="3"/>
+              <circle cx="4" cy="12" r="2"/>
+              <circle cx="12" cy="10" r="2"/>
+              <circle cx="20" cy="14" r="2"/>
+            </svg>
+            <h4>Stem Layer Mixer</h4>
+            <span class="stem-badge">myNoise-Style</span>
+          </div>
+          <p class="settings-desc">Fine-tune individual harmonic keys, rhythmic pulses, and acoustic masking.</p>
+
+          <div class="stem-sliders-rack">
+            <!-- Stem 1: Harmony & Keys -->
+            <div class="stem-slider-row">
+              <div class="stem-meta">
+                <span class="stem-name">Harmonics &amp; Chords</span>
+                <span class="stem-val" id="stemHarmonyVal">80%</span>
+              </div>
+              <div class="stem-control-wrap">
+                <button type="button" class="stem-mute-btn" id="muteStemHarmony" title="Mute/Unmute Harmonics">M</button>
+                <div class="slider-track-wrap">
+                  <input type="range" class="stem-slider" id="stemHarmonySlider" min="0" max="1" step="0.01" value="0.80" aria-label="Harmonic keys stem volume">
+                </div>
+              </div>
+            </div>
+
+            <!-- Stem 2: Rhythm & Arpeggiator -->
+            <div class="stem-slider-row">
+              <div class="stem-meta">
+                <span class="stem-name">Neural Pulse &amp; Arp</span>
+                <span class="stem-val" id="stemRhythmVal">65%</span>
+              </div>
+              <div class="stem-control-wrap">
+                <button type="button" class="stem-mute-btn" id="muteStemRhythm" title="Mute/Unmute Rhythm">M</button>
+                <div class="slider-track-wrap">
+                  <input type="range" class="stem-slider" id="stemRhythmSlider" min="0" max="1" step="0.01" value="0.65" aria-label="Rhythmic arpeggiator stem volume">
+                </div>
+              </div>
+            </div>
+
+            <!-- Stem 3: Texture & Vinyl -->
+            <div class="stem-slider-row">
+              <div class="stem-meta">
+                <span class="stem-name">Organic Texture / Vinyl</span>
+                <span class="stem-val" id="stemTextureVal">40%</span>
+              </div>
+              <div class="stem-control-wrap">
+                <button type="button" class="stem-mute-btn" id="muteStemTexture" title="Mute/Unmute Textures">M</button>
+                <div class="slider-track-wrap">
+                  <input type="range" class="stem-slider" id="stemTextureSlider" min="0" max="1" step="0.01" value="0.40" aria-label="Organic texture stem volume">
+                </div>
+              </div>
+            </div>
+
+            <!-- Stem 4: Pink & Brown Noise Bed -->
+            <div class="stem-slider-row">
+              <div class="stem-meta">
+                <span class="stem-name">Masking Noise Bed</span>
+                <span class="stem-val" id="stemMaskingVal">35%</span>
+              </div>
+              <div class="stem-control-wrap">
+                <button type="button" class="stem-mute-btn" id="muteStemMasking" title="Mute/Unmute Noise Bed">M</button>
+                <div class="slider-track-wrap">
+                  <input type="range" class="stem-slider" id="stemMaskingSlider" min="0" max="1" step="0.01" value="0.35" aria-label="Acoustic masking stem volume">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Session Timer / Pomodoro Presets -->
         <div class="card settings-card">
           <div class="settings-header-row">
@@ -764,6 +873,79 @@
     <footer class="app-footer">
       <p>Clean-Room REA Implementation &bull; Web Audio API &bull; 100% Offline &amp; Local Personal Use</p>
     </footer>
+  </div>
+
+  <!-- Winamp-Inspired Windowshade / Floating Mini-Player Dock -->
+  <aside class="mini-dock" id="miniDock" aria-label="Windowshade Mini Player" hidden>
+    <div class="mini-dock-inner">
+      <!-- Digital VFD / Oscilloscope Marquee -->
+      <div class="mini-dock-left">
+        <canvas id="miniVisualizer" width="80" height="26" class="mini-scope" aria-hidden="true"></canvas>
+        <div class="mini-meta">
+          <span class="mini-title" id="miniModeTitle">DEEP FOCUS</span>
+          <span class="mini-freq" id="miniFreqBadge">16.0 Hz Beta</span>
+        </div>
+        <div class="mini-timer" id="miniTimer">--:--</div>
+      </div>
+
+      <!-- Tactile Transport -->
+      <div class="mini-dock-center">
+        <button type="button" class="mini-btn" id="miniPrevMode" title="Previous Brainwave State">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+        <button type="button" class="mini-play-btn" id="miniPlayBtn" title="Play or Pause (Space)">
+          <svg id="miniPlayIcon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><polygon points="6,4 20,12 6,20"/></svg>
+          <svg id="miniPauseIcon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:none;" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <button type="button" class="mini-btn" id="miniNextMode" title="Next Brainwave State">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+      </div>
+
+      <!-- Quick Sliders & Expand -->
+      <div class="mini-dock-right">
+        <div class="mini-vol-wrap">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg>
+          <input type="range" id="miniVolumeSlider" min="0" max="1" step="0.01" value="0.8" aria-label="Mini player volume">
+        </div>
+        <button type="button" class="mini-btn-icon" id="miniExpandBtn" title="Expand Full Studio (M)">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Brain.fm-Inspired Full-Screen Zen Immersion Mode -->
+  <div class="zen-overlay" id="zenOverlay" aria-modal="true" role="dialog" hidden>
+    <!-- Hypnotic Entrainment Canvas -->
+    <canvas id="zenCanvas" class="zen-canvas"></canvas>
+
+    <!-- Center Minimalist Typography -->
+    <div class="zen-center-hud">
+      <div class="zen-badge" id="zenModeBadge">BETA WAVE TARGET</div>
+      <h2 class="zen-title" id="zenTitle">Deep Focus</h2>
+      <div class="zen-timer" id="zenTimer">--:--</div>
+      <p class="zen-sub" id="zenSub">16.0 Hz Cortical Phase-Locking</p>
+    </div>
+
+    <!-- Floating Glassmorphic Transport (Auto-fading) -->
+    <div class="zen-transport-pill" id="zenControls">
+      <button type="button" class="zen-btn" id="zenPlayBtn" title="Play or Pause (Space)">
+        <svg id="zenPlayIcon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><polygon points="6,4 20,12 6,20"/></svg>
+        <svg id="zenPauseIcon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display:none;" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      </button>
+      <div class="zen-modes-pills" id="zenModesPills">
+        <button type="button" class="zen-pill active" data-mode="focus">Focus</button>
+        <button type="button" class="zen-pill" data-mode="adhd">ADHD</button>
+        <button type="button" class="zen-pill" data-mode="flow">Flow</button>
+        <button type="button" class="zen-pill" data-mode="relax">Relax</button>
+        <button type="button" class="zen-pill" data-mode="meditate">Meditate</button>
+        <button type="button" class="zen-pill" data-mode="sleep">Sleep</button>
+      </div>
+      <button type="button" class="zen-close-btn" id="zenCloseBtn" title="Exit Zen Mode (Esc)">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
   </div>
 
   <!-- Audio Engine & Client App Scripts -->

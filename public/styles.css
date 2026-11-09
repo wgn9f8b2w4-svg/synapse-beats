@@ -58,6 +58,8 @@
   --accent-green: #30d158;      /* iOS Active State */
   --accent-amber: #fbbf24;      /* Meditate & Theta */
   --accent-indigo: #818cf8;     /* Deep Sleep & Delta */
+  --active-accent: #38bdf8;     /* Dynamic Active Brainwave Color */
+  --active-glow: rgba(56, 189, 248, 0.25);
 
   /* Continuous Squircle Radius Hierarchy */
   --radius-xl: 24px;
@@ -1571,4 +1573,601 @@ input[type="range"]:focus-visible,
     width: 22px;
     height: 22px;
   }
+}
+
+/* ==========================================================================
+   21. Hybrid Modern Studio: Navigation, Mini Dock, Zen Mode & Stem Mixer
+   ========================================================================== */
+
+/* Header Navigation Pills */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 4px 6px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-tertiary);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease, transform var(--duration-micro) var(--ease-spring);
+}
+
+.nav-pill:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-pill:active {
+  transform: scale(0.97);
+}
+
+.nav-pill.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.nav-pill-action {
+  color: var(--active-accent);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  background: rgba(56, 189, 248, 0.05);
+}
+
+.nav-pill-action:hover {
+  background: rgba(56, 189, 248, 0.12);
+  color: #ffffff;
+}
+
+.kbd-hint {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-secondary);
+}
+
+/* Visualizer Header Actions */
+.vis-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vis-zen-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  color: var(--accent-cyan);
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease, transform var(--duration-micro) var(--ease-spring);
+}
+
+.vis-zen-btn:hover {
+  background: rgba(56, 189, 248, 0.18);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.vis-zen-btn:active {
+  transform: scale(0.96);
+}
+
+/* ==========================================================================
+   22. myNoise Multi-Stem Acoustic Mixer Rack
+   ========================================================================== */
+
+.stem-mixer-card {
+  border-color: rgba(56, 189, 248, 0.14);
+}
+
+.stem-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.1);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  margin-left: auto;
+}
+
+.stem-sliders-rack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.stem-slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: border-color var(--duration-fast) ease, background-color var(--duration-fast) ease;
+}
+
+.stem-slider-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.09);
+}
+
+.stem-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stem-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.stem-val {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--accent-cyan);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.stem-control-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stem-mute-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+}
+
+.stem-mute-btn:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.stem-mute-btn.is-muted {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #f87171;
+}
+
+.stem-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+  cursor: pointer;
+}
+
+.stem-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--active-accent);
+  box-shadow: 0 0 10px var(--active-accent);
+  cursor: pointer;
+  transition: transform var(--duration-micro) var(--ease-spring);
+}
+
+.stem-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* ==========================================================================
+   23. Winamp Windowshade / Floating Mini-Player Dock
+   ========================================================================== */
+
+[hidden],
+.mini-dock[hidden],
+.zen-overlay[hidden] {
+  display: none !important;
+}
+
+.mini-dock {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  width: calc(100% - 48px);
+  max-width: 620px;
+  background: rgba(14, 14, 18, 0.88);
+  backdrop-filter: var(--glass-blur-heavy);
+  -webkit-backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.8), 0 0 24px var(--active-glow);
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  animation: miniDockSlideUp 350ms var(--ease-spring);
+}
+
+@keyframes miniDockSlideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+.mini-dock-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.mini-dock-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 170px;
+}
+
+.mini-scope {
+  background: #000000;
+  border-radius: 4px;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  box-shadow: inset 0 0 8px rgba(56, 189, 248, 0.2);
+}
+
+.mini-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.mini-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+}
+
+.mini-freq {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--active-accent);
+}
+
+.mini-timer {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-green);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  background: rgba(48, 209, 88, 0.1);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(48, 209, 88, 0.25);
+}
+
+.mini-dock-center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease, transform var(--duration-micro) var(--ease-spring);
+}
+
+.mini-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  transform: scale(1.08);
+}
+
+.mini-play-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--active-accent);
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 16px var(--active-glow);
+  transition: transform var(--duration-fast) var(--ease-spring), filter var(--duration-fast) ease;
+}
+
+.mini-play-btn:hover {
+  transform: scale(1.08);
+  filter: brightness(1.15);
+}
+
+.mini-play-btn:active {
+  transform: scale(0.95);
+}
+
+.mini-dock-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mini-vol-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-tertiary);
+  width: 90px;
+}
+
+.mini-vol-wrap input[type="range"] {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+}
+
+.mini-vol-wrap input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.mini-btn-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease, transform var(--duration-micro) var(--ease-spring);
+}
+
+.mini-btn-icon:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  transform: scale(1.06);
+}
+
+/* ==========================================================================
+   24. Brain.fm Full-Screen Zen Immersion Mode
+   ========================================================================== */
+
+.zen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #020204;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  animation: zenFadeIn 450ms var(--ease-spring);
+}
+
+@keyframes zenFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.zen-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.zen-center-hud {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  user-select: none;
+  gap: 12px;
+}
+
+.zen-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--active-accent);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.zen-title {
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.zen-timer {
+  font-size: 80px;
+  font-weight: 300;
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.zen-sub {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.05em;
+}
+
+.zen-transport-pill {
+  position: absolute;
+  bottom: 40px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(18, 18, 22, 0.75);
+  backdrop-filter: var(--glass-blur-heavy);
+  -webkit-backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.7);
+  transition: opacity var(--duration-medium) ease, transform var(--duration-medium) var(--ease-spring);
+}
+
+.zen-transport-pill.is-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+.zen-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: var(--active-accent);
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 20px var(--active-glow);
+  transition: transform var(--duration-micro) var(--ease-spring), filter var(--duration-fast) ease;
+}
+
+.zen-btn:hover {
+  transform: scale(1.08);
+  filter: brightness(1.15);
+}
+
+.zen-modes-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.zen-pill {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+}
+
+.zen-pill:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.zen-pill.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-color: var(--active-accent);
+}
+
+.zen-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease, transform var(--duration-micro) var(--ease-spring);
+}
+
+.zen-close-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  transform: scale(1.08);
 }
